@@ -15,8 +15,8 @@
     </div>
     <div class="form-group">
       <label for="room">Room</label>
-      <select id="room" class="form-control" [(ngModel)]="request.room.id" name="room" required>
-        <option *ngFor="let room of rooms" [value]="room.id">{{ room.name }} ({{ room.category }})</option>
+      <select id="room" class="form-control" [(ngModel)]="request.roomId" name="room" required>
+        <option *ngFor="let room of rooms" [value]="room.id">{{ room.name }} </option>
       </select>
     </div>
     <div class="form-group">
@@ -33,7 +33,7 @@
     </div>
     <div class="form-group">
       <label for="technicianAssigned">Technician Assigned</label>
-      <select id="technicianAssigned" class="form-control" [(ngModel)]="request.technicianAssigned" name="technicianAssigned">
+      <select id="technicianAssigned" class="form-control" [(ngModel)]="request.technicianAssignedId" name="technicianAssigned">
         <option *ngFor="let tech of technicians" [value]="tech.id">{{ tech.name }} ({{ tech.position }})</option>
       </select>
     </div>

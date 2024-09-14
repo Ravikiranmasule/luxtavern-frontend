@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -73,8 +73,14 @@ import { StaffDashBoardComponent } from './staff-dash-board/staff-dash-board.com
 import { StaffDashRegisterComponent } from './staff-dash-register/staff-dash-register.component';
 import { StaffDashEditComponent } from './staff-dash-edit/staff-dash-edit.component';
 import { StaffDashDetailsComponent } from './staff-dash-details/staff-dash-details.component';
+import { ConfigService } from './config.service';
+import { GuestRoomInfoComponent } from './guest-room-info/guest-room-info.component';
+import { GuestContactusComponent } from './guest-contactus/guest-contactus.component';
+import { GuestAmenitiesComponent } from './guest-amenities/guest-amenities.component';
 
-
+export function initializeApp(configService: ConfigService) {
+  return () => configService.loadConfig();
+}
 
 
 
@@ -146,6 +152,9 @@ import { StaffDashDetailsComponent } from './staff-dash-details/staff-dash-detai
     StaffDashRegisterComponent,
     StaffDashEditComponent,
     StaffDashDetailsComponent,
+    GuestRoomInfoComponent,
+    GuestContactusComponent,
+    GuestAmenitiesComponent,
   
     
   ],
@@ -155,7 +164,12 @@ import { StaffDashDetailsComponent } from './staff-dash-details/staff-dash-detai
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [{
+    provide: APP_INITIALIZER,
+    useFactory: initializeApp,
+    deps: [ConfigService],
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

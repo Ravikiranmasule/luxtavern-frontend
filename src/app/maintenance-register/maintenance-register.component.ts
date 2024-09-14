@@ -8,6 +8,7 @@ import { StaffService } from '../staff.service';
 import { MaintenanceRequest } from '../models/MaintenanceRequest.model';
 import { Room } from '../models/Room.model';
 import { Staff } from '../models/Staff.model';
+import { MaintenanceRequestPayload } from '../models/MaintenanceRequestPayload.model';
 
 @Component({
   selector: 'app-maintenance-register',
@@ -15,19 +16,18 @@ import { Staff } from '../models/Staff.model';
   styleUrls: ['./maintenance-register.component.css']
 })
 export class MaintenanceRegisterComponent implements OnInit {
-  request: MaintenanceRequest = {
-    id: 0,
+  request: MaintenanceRequestPayload = {
     description: '',
     status: 'PENDING',
-    room: { id: 0, name: '', category: '', amenities: '', price: 0 },
-    reportedBy: '',
+    roomId: 0,
     requestTime: new Date(),
-    completionTime: undefined,
-    technicianAssigned: undefined,
+    completionTime: new Date(),
+    technicianAssignedId: 0,
     notes: '',
     priority: '',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
+    reportedBy: ''
   };
 
   statuses: string[] = [];
@@ -58,6 +58,7 @@ export class MaintenanceRegisterComponent implements OnInit {
   fetchRooms(): void {
     this.roomService.getAllRooms().subscribe(
       (rooms) => this.rooms = rooms,
+      
       (error) => console.error('Error fetching rooms', error)
     );
   }
@@ -73,7 +74,7 @@ export class MaintenanceRegisterComponent implements OnInit {
     this.maintenanceService.createRequest(this.request).subscribe(
       () => {
         alert('Request registered successfully');
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/maintenance-dashboard']);
       },
       (error) => {
         alert('Error registering request');
@@ -87,7 +88,7 @@ export class MaintenanceRegisterComponent implements OnInit {
   }
 
   onCompletionTimeChange(value: string): void {
-    this.request.completionTime = value ? new Date(value) : undefined;
+    this.request.completionTime = new Date(value) ;
   }
 
   onCreatedAtChange(value: string): void {

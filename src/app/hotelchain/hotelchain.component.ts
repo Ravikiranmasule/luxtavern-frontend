@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HotelChain } from '../models/hotel-chain.model';
 import { HotelService } from '../hotel.service';
+import { HotelChainService } from '../hotelchain.service';
 
 @Component({
   selector: 'app-hotelchain',
@@ -11,14 +12,14 @@ export class HotelchainComponent implements OnInit {
 
   hotelChains: HotelChain[] = [];
 
-  constructor(private hotelService: HotelService) { }
+  constructor(private hotelService: HotelService,private hotelChainService:HotelChainService) { }
 
   ngOnInit(): void {
     this.getAllHotelChains();
   }
 
   getAllHotelChains(): void {
-    this.hotelService.getAllHotelChains().subscribe(hotelChains => {
+    this.hotelChainService.getAllHotelChains().subscribe(hotelChains => {
       this.hotelChains = hotelChains;
     }, error => {
       console.error('Error fetching hotel chains', error);
@@ -27,7 +28,7 @@ export class HotelchainComponent implements OnInit {
 
   deleteChain(id: number): void {
     if (confirm('Are you sure you want to delete this chain?')) {
-      this.hotelService.deleteHotelChain(id).subscribe(() => {
+      this.hotelChainService.deleteHotelChain(id).subscribe(() => {
         alert('Hotel chain deleted');
         this.getAllHotelChains();
       }, error => {

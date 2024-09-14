@@ -67,11 +67,18 @@ import { StaffDashBoardComponent } from './staff-dash-board/staff-dash-board.com
 import { StaffDashDetailsComponent } from './staff-dash-details/staff-dash-details.component';
 import { StaffDashEditComponent } from './staff-dash-edit/staff-dash-edit.component';
 import { StaffDashRegisterComponent } from './staff-dash-register/staff-dash-register.component';
+import { GuestRoomInfoComponent } from './guest-room-info/guest-room-info.component';
+import { GuestContactusComponent } from './guest-contactus/guest-contactus.component';
+import { GuestAmenitiesComponent } from './guest-amenities/guest-amenities.component';
 
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },  // Public route
-  { path: 'login', component: LoginComponent }, // Public route
+  { path: '', component: GuestDashboardComponent },  // Public route
+  { path: 'login', component: LoginComponent },
+  { path: 'guest-dashboard', component: GuestDashboardComponent },
+  { path: 'guest-room-info', component: GuestRoomInfoComponent }, 
+  { path: 'guest-contactus', component: GuestContactusComponent },
+  { path: 'guest-amenities', component: GuestAmenitiesComponent},// Public route
    
   { path: 'register', component: RegisterComponent, canActivate: [AuthGuard],data: { role: 'ADMIN' } }, // Public route
   { path: 'user-details', component: UserDetailsComponent, canActivate: [AuthGuard] }, // Protected route
@@ -81,7 +88,7 @@ const routes: Routes = [
   { path: 'room-edit/:id', component: RoomEditComponent, canActivate: [AuthGuard], data: { role: 'STAFF' } },
   { path: 'room-details/:id', component: RoomDetailsComponent, canActivate: [AuthGuard], data: { role: 'STAFF' } },
   { path: 'register-room', component: RegisterroomComponent, canActivate: [AuthGuard], data: { role: 'STAFF' } },// Staff only
-  { path: 'guest-dashboard', component: GuestDashboardComponent, canActivate: [AuthGuard], data: { role: 'GUEST' } },
+  
   { path: 'user-edit/:id', component: UserEditComponent , canActivate: [AuthGuard],data: { role: 'ADMIN' }},
   { path: 'user-details/:id', component: UserDetailsComponent, canActivate: [AuthGuard],data: { role: 'ADMIN' } },
   { path: 'staff-dash-board', component: StaffDashBoardComponent, canActivate: [AuthGuard],data: { role: 'ADMIN' } },

@@ -6,6 +6,8 @@ import { Hotel } from '../models/hotel.model';
 import { HotelChain } from '../models/hotel-chain.model';
 import { HotelBrand } from '../models/hotel-brand.model';
 import { AuthService } from '../auth.service';
+import { HotelChainService } from '../hotelchain.service';
+import { HotelBrandService } from '../hotelbrand.service';
 
 @Component({
   selector: 'app-manager-dashboard',
@@ -19,14 +21,16 @@ export class ManagerDashboardComponent implements OnInit {
 
   constructor(
     private hotelService: HotelService,
+    private hotelChainService:HotelChainService,
+    private hotelBrandService:HotelBrandService,
     private router: Router,
     private authService: AuthService
   ) { }
 
   ngOnInit(): void {
     this.getAllHotels();
-    this.getAllHotelChains();
-    this.getAllHotelBrands();
+    // this.getAllHotelChains();
+    // this.getAllHotelBrands();
   }
 
   getAllHotels(): void {
@@ -38,7 +42,7 @@ export class ManagerDashboardComponent implements OnInit {
   }
 
   getAllHotelChains(): void {
-    this.hotelService.getAllHotelChains().subscribe(hotelChains => {
+    this.hotelChainService.getAllHotelChains().subscribe(hotelChains => {
       this.hotelChains = hotelChains;
     }, error => {
       console.error('Error fetching hotel chains', error);
@@ -46,7 +50,7 @@ export class ManagerDashboardComponent implements OnInit {
   }
 
   getAllHotelBrands(): void {
-    this.hotelService.getAllHotelBrands().subscribe(hotelBrands => {
+    this.hotelBrandService.getAllHotelBrands().subscribe(hotelBrands => {
       this.hotelBrands = hotelBrands;
     }, error => {
       console.error('Error fetching hotel brands', error);

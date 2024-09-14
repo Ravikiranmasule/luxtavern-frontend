@@ -1,48 +1,52 @@
+// booking.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Booking } from './models/Booking.model';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookingService {
-  private baseUrl = 'https://luxtavern-backend-production.up.railway.app/api/bookings';  // Replace with your backend URL
+  constructor(private http: HttpClient, private configService: ConfigService) {}
 
-  constructor(private http: HttpClient) {}
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    } else {
+      throw new Error('No authentication token found');
+    }
+  }
 
   getAllBookings(): Observable<Booking[]> {
-    const token = localStorage.getItem('authToken');
-    return this.http.get<Booking[]>(this.baseUrl, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+    return this.http.get<Booking[]>(this.configService.bookingsEndpoint, {
+      headers: this.getAuthHeaders()
     });
   }
 
   getBookingById(id: number): Observable<Booking> {
-    const token = localStorage.getItem('authToken');
-    return this.http.get<Booking>(`${this.baseUrl}/${id}`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+    return this.http.get<Booking>(`${this.configService.bookingsEndpoint}/${id}`, {
+      headers: this.getAuthHeaders()
     });
   }
 
   createBooking(booking: Booking): Observable<Booking> {
-    const token = localStorage.getItem('authToken');
-    return this.http.post<Booking>(this.baseUrl, booking, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+    return this.http.post<Booking>(this.configService.bookingsEndpoint, booking, {
+      headers: this.getAuthHeaders()
     });
   }
 
   updateBooking(id: number, booking: Booking): Observable<Booking> {
-    const token = localStorage.getItem('authToken');
-    return this.http.put<Booking>(`${this.baseUrl}/${id}`, booking, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+    return this.http.put<Booking>(`${this.configService.bookingsEndpoint}/${id}`, booking, {
+      headers: this.getAuthHeaders()
     });
   }
 
   cancelBooking(id: number): Observable<void> {
-    const token = localStorage.getItem('authToken');
-    return this.http.delete<void>(`${this.baseUrl}/${id}`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+    return this.http.delete<void>(`${this.configService.bookingsEndpoint}/${id}`, {
+      headers: this.getAuthHeaders()
     });
   }
 }

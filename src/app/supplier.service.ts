@@ -1,18 +1,18 @@
+// src/app/services/supplier.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Supplier } from './models/Supplier.model';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SupplierService {
-  private apiUrl = 'https://luxtavern-backend-production.up.railway.app/api/inventory/suppliers'; // Replace with your backend URL
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private configService: ConfigService) { }
 
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('authToken'); // Get the token from localStorage
+    const token = localStorage.getItem('authToken');
     if (token) {
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
     } else {
@@ -21,31 +21,31 @@ export class SupplierService {
   }
 
   getSuppliers(): Observable<Supplier[]> {
-    return this.http.get<Supplier[]>(this.apiUrl, {
+    return this.http.get<Supplier[]>(this.configService.suppliersEndpoint, {
       headers: this.getAuthHeaders()
     });
   }
 
   getSupplier(id: number): Observable<Supplier> {
-    return this.http.get<Supplier>(`${this.apiUrl}/${id}`, {
+    return this.http.get<Supplier>(`${this.configService.suppliersEndpoint}/${id}`, {
       headers: this.getAuthHeaders()
     });
   }
 
   createSupplier(supplier: Supplier): Observable<Supplier> {
-    return this.http.post<Supplier>(this.apiUrl, supplier, {
+    return this.http.post<Supplier>(this.configService.suppliersEndpoint, supplier, {
       headers: this.getAuthHeaders()
     });
   }
 
   updateSupplier(supplier: Supplier): Observable<Supplier> {
-    return this.http.put<Supplier>(`${this.apiUrl}/${supplier.id}`, supplier, {
+    return this.http.put<Supplier>(`${this.configService.suppliersEndpoint}/${supplier.id}`, supplier, {
       headers: this.getAuthHeaders()
     });
   }
 
   deleteSupplier(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, {
+    return this.http.delete<void>(`${this.configService.suppliersEndpoint}/${id}`, {
       headers: this.getAuthHeaders()
     });
   }

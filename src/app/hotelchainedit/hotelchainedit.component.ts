@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HotelChain } from '../models/hotel-chain.model';
 import { HotelService } from '../hotel.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HotelChainService } from '../hotelchain.service';
 
 @Component({
   selector: 'app-hotelchainedit',
@@ -14,6 +15,7 @@ export class HotelchaineditComponent implements OnInit {
 
   constructor(
     private hotelService: HotelService,
+    private hotelChainService:HotelChainService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -22,7 +24,7 @@ export class HotelchaineditComponent implements OnInit {
     const chainId = this.route.snapshot.paramMap.get('id');
     if (chainId) {
       this.isEditing = true;
-      this.hotelService.getHotelChainById(+chainId).subscribe(chain => {
+      this.hotelChainService.getHotelChainById(+chainId).subscribe(chain => {
         this.chain = chain;
       }, error => {
         console.error('Error fetching hotel chain details', error);
@@ -32,16 +34,16 @@ export class HotelchaineditComponent implements OnInit {
 
   saveChain(): void {
     if (this.isEditing) {
-      this.hotelService.updateHotelChain(this.chain.id, this.chain).subscribe(() => {
+      this.hotelChainService.updateHotelChain(this.chain.id, this.chain).subscribe(() => {
         alert('Hotel chain updated successfully');
-        this.router.navigate(['/hotel-chain-list']);
+        this.router.navigate(['/hotel-chain']);
       }, error => {
         console.error('Error updating hotel chain', error);
       });
     } else {
-      this.hotelService.addHotelChain(this.chain).subscribe(() => {
+      this.hotelChainService.createHotelChain(this.chain).subscribe(() => {
         alert('Hotel chain added successfully');
-        this.router.navigate(['/hotel-chain-list']);
+        this.router.navigate(['/hotel-chain']);
       }, error => {
         console.error('Error adding hotel chain', error);
       });
@@ -49,7 +51,7 @@ export class HotelchaineditComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate(['/hotel-chain-list']);
+    this.router.navigate(['/hotel-chain']);
   }
 
   

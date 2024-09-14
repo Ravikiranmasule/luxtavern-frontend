@@ -6,6 +6,8 @@ import { HotelChain } from '../models/hotel-chain.model';
 import { HotelBrand } from '../models/hotel-brand.model';
 import { Hotel } from '../models/hotel.model';
 import { HotelPayload } from '../models/HotelPayload.model';
+import { HotelChainService } from '../hotelchain.service';
+import { HotelBrandService } from '../hotelbrand.service';
 
 @Component({
   selector: 'app-registerhotel',
@@ -45,6 +47,8 @@ export class RegisterhotelComponent implements OnInit {
   
     constructor(
       private hotelService: HotelService,
+      private hotelChainService:HotelChainService,
+      private hotelBrandService:HotelBrandService,
       private router: Router
     ) { }
   
@@ -54,7 +58,7 @@ export class RegisterhotelComponent implements OnInit {
     }
   
     getAllHotelChains(): void {
-      this.hotelService.getAllHotelChains().subscribe(chains => {
+      this.hotelChainService.getAllHotelChains().subscribe(chains => {
         this.hotelChains = chains;
       }, error => {
         console.error('Error fetching hotel chains', error);
@@ -62,7 +66,7 @@ export class RegisterhotelComponent implements OnInit {
     }
   
     getAllHotelBrands(): void {
-      this.hotelService.getAllHotelBrands().subscribe(brands => {
+      this.hotelBrandService.getAllHotelBrands().subscribe(brands => {
         this.hotelBrands = brands;
       }, error => {
         console.error('Error fetching hotel brands', error);
@@ -80,7 +84,7 @@ export class RegisterhotelComponent implements OnInit {
         };
     
         this.hotelService.registerHotel(hotelPayload).subscribe(() => {
-          console.log(this.hotel.chain.id);
+         
           alert('Hotel registered successfully');
           this.router.navigate(['/manager-dashboard']);
         }, error => {

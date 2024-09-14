@@ -26,7 +26,9 @@ export class ReceptionistComponent implements OnInit {
 
   cancelBooking(id: number): void {
     this.bookingService.cancelBooking(id).subscribe(() => {
+      if(confirm("Do you want to delete this record")){
       this.getAllBookings(); // Refresh the list after cancellation
+      }
     });
   }
 
